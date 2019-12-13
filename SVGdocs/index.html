@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>SVG MiniDocumentation</title>
+</head>
+<body>
+    <!-- 
+Positions
+Basic Shapes
+Paths
+Fills and Strokes
+Gradients
+Patterns
+Texts
+Basic Transformations
+Clipping and masking
+....maybe the stuff below too
+Other content in SVG
+Filter effects
+SVG fonts
+SVG Image tag
+Tools for SVG
+SVG and CSS
+ 
+-->
+
+
+<nav id="navbar">
+    <header>SVG Mini Documentation</header>
+    <ul>
+      <li><a class="nav-link" href="#Introduction">Introduction</a></li>
+      <li>
+        <a class="nav-link" href="#Position">Position</a>
+      </li>
+      <li>
+        <a class="nav-link" href="#Basic_Shapes">Basic Shapes</a>
+      </li>
+      <li><a class="nav-link" href="#Paths">Paths</a></li>
+      <li><a class="nav-link" href="#Fills_and_Strokes">Fills and Strokes</a></li>
+      <li>
+        <a class="nav-link" href="#Gradients">Gradients</a>
+      </li>
+  <!--     <li><a class="nav-link" href="#Patterns">Patterns</a></li>
+      <li><a class="nav-link" href="#Texts">Texts</a></li>
+      <li><a class="nav-link" href="#Transformations">Transformations</a></li>
+      <li><a class="nav-link" href="#Clipping_and_Masking">Clipping and Masking</a></li>
+      <li>
+        <a class="nav-link" href="#Filter_Effects">Filter Effects</a>
+      </li>
+      <li><a class="nav-link" href="#Animations">Animation</a></li>
+      <li>
+        <a class="nav-link" href="#Fonts">Fonts</a
+        >
+      </li>
+      <li><a class="nav-link" href="#Reference">Reference</a></li> -->
+    </ul>
+  </nav>
+  <main id="main-doc">
+    <section class="main-section" id="Introduction">
+      <header>Introduction</header>
+      <article>
+        <p>
+          SVG is an XML language, similar to XHTML, which can be used to draw vector graphics, such as the ones shown to the right. It can be used to create an image either by specifying all the lines and shapes necessary, by modifying already existing raster images, or by a combination of both. The image and its components can also be transformed, composited together, or filtered to change their appearance completely.
+  
+  SVG came about in 1999 after several competing formats had been submitted to the W3C and failed to be fully ratified. SVG is supported by all major browsers. A downside is loading SVG can be slow. SVG does offer benefits, some of which include having a DOM interface available for it, and not requiring third-party extensions. Whether or not to use it often depends on your specific use case.
+        </p>
+        <blockquote>
+        <p>Scalable Vector Graphics (SVG) is an XML-based markup language for describing two dimensional based  vector graphics. SVG is essentially to graphics what HTML is to text.
+  </p>
+        </blockquote>
+  
+        <p>
+          HTML provides elements for defining headers, paragraphs, tables, and so on. In much the same way SVG provides elements for circles, rectangles, and simple and complex curves. A simple SVG document consists of nothing more than the 'svg' root element and several basic shapes that build a graphic together. In addition there is the 'g' element, which is used to group several basic shapes together.
+  
+  Starting from there, the SVG image can become arbitrarily complex. SVG supports gradients, rotations, filter effects, animations, interactivity with JavaScript, and so on. But all these extra features of the language rely on this relatively small set of elements to define the graphics area.
+  </p>
+       
+      </article>
+    </section>
+    <section class="main-section" id="Position">
+      <header>Position</header>
+      <article>
+        
+        <p>In this article, we examine how Scalable Vector Graphics (SVG) represents the positions and sizes of objects within a drawing context, including coordinate system and what a "pixel" measurement means in a scalable context.
+        </p>
+        
+        <h2>The Grid</h2>
+        <p>
+          For all elements, SVG uses a coordinate system or grid system similar to the one used by canvas (and by a whole lot of other computer drawing routines). That is, the top left corner of the document is considered to be the point (0,0), or point of origin. Positions are then measured in pixels from the top left corner, with the positive x direction being to the right, and the positive y direction being to the bottom. Note that this is the opposite of the way you're taught to graph as a kid. However, this is the same way elements in HTML are positioned (By default, LTR documents are considered not the RTL documents which position X from right-to-left).
+        </p>
+        
+        <h2>Pixels</h2>
+        <p>
+          In the most basic case one pixel in an SVG document maps to one pixel on the output device (a.k.a. the screen). But SVG wouldn't have the "Scalable" in its name, if there weren't several possibilities to change this behaviour. Much like absolute and relative font sizes in CSS, SVG defines absolute units (ones with a dimensional identifier like "pt" or "cm") and so-called user units, that lack that identifier and are plain numbers.
+  
+  Without further specification, one user unit equals one screen unit. To explicitly change this behaviour, there are several possibilities in SVG. We start with the svg root element:
+        </p>
+        
+        <code>>>> svg width="100" height="100" 
+        </code>
+        
+          <p>
+            The above element defines a simple SVG canvas with 100x100px. One user unit equals one screen unit.
+          </p>
+          
+          <code>>>> svg width="200" height="200" viewBox="0 0 100 100"
+          </code>
+  
+     <p>The whole SVG canvas here is 200px by 200px in size. However, the viewBox attribute defines the portion of that canvas to display. These 200x200 pixels display an area that starts at user unit (0,0) and spans 100x100 user units to the right and to the bottom. This effectively zooms in on the 100x100 unit area and enlarges the image to double size.</p>
+        
+        <p>The current mapping (for a single element or the whole image) of user units to screen units is called user coordinate system. Apart from scaling the coordinate system can also be rotated, skewed and flipped. The default user coordinate system maps one user pixel to one device pixel. (However, the device may decide, what it understands as one pixel.) Lengths in the SVG file with specific dimensions, like "in" or "cm", are then calculated in a way that makes them appear 1:1 in the resulting image.
+        </p>
+      </article>
+    </section>
+    <section class="main-section" id="Basic_Shapes">
+      <header>Basic Shapes</header>
+      <article>
+        <p>There are several basic shapes used for most SVG drawing. The purpose of these shapes is fairly obvious from their names. Some of the attributes that determine their position and size are given, but an element reference would probably contain more accurate and complete descriptions along with other properties that won't be covered in here. However, since they're used in most SVG documents, it's necessary to give them some sort of introduction.
+        </p>
+        <p>
+          To insert a shape, you create an element in the document. Different elements correspond to different shapes and take different attributes to describe the size and position of those shapes. Some are slightly redundant in that they can be created by other shapes, but they're all there for your convenience and to keep your SVG documents as short and as readable as possible. 
+        </p>
+        
+        <h2>Rectangles</h2>
+        <p>
+         The rect element does exactly what you would expect and draws a rectangle on the screen. There are really only 6 basic attributes that control the position and shape of the rectangle on screen here. The image shown earlier shows two rect elements, which admittedly is a bit redundant. The one on the right has its rx and ry attributes set, giving it rounded corners. If they're not set, they default to 0.
+        </p>
+        <div class="exampleCode">
+            <code>>>> rect x="10" y="10" width="30" height="30"
+          >>> rect x="60" y="10" rx="10" ry="10" width="30" height="30"
+        </code>
+        </div> 
+        <div class="definitions">
+        <dl>  
+          <dt><strong>x</strong></dt>
+          <dd>The x position of the top left corner of the rectangle.</dd>
+          <dt><strong>y</strong></dt>
+          <dd>The y position of the top left corner of the rectangle.
+  </dd>
+          <dt><strong>width</strong></dt>
+          <dd>The width of the rectangle</dd>
+          <dt><strong>height</strong></dt>
+          <dd>The height of the rectangle
+  </dd>
+          <dt><strong>rx</strong></dt>
+          <dd>The x radius of the corners of the rectangle</dd>
+          <dt><strong>ry</strong></dt>
+          <dd>The y radius of the corners of the rectangle</dd>
+        </dl>
+        </div>
+        
+        <h2>Circle</h2>
+        <p>As you would have guessed, the circle element draws a circle on the screen. There are really only 3 attributes that are applicable here.</p>
+        <div class="exampleCode"> 
+          <code>>>> circle cx="25" cy="75" r="20"
+          </code>
+        </div>
+        <div class="definitions">
+         <dt><strong>r</strong></dt>
+         <dd>The radius of the circle.
+  </dd>
+         <dt><strong>cx</strong></dt>
+         <dd>The x position of the center of the circle.
+  </dd>
+         <dt><strong>cy</strong></dt>
+         <dd>The y position of the center of the circle.
+  </dd>
+        </div>
+        
+        <h2>Ellipse</h2>
+        <p>Ellipses are actually just a more general form of the circle element, where you can scale the x and y radius (commonly called the semimajor and semiminor axis by math people) of the circle separately.</p>
+        <div class="exampleCode">
+          <code>>>> ellipse cx="75" cy="75" rx="20" ry="5"</code>        
+        </div>
+        <div class="definitions">
+          <dt><strong>rx</strong></dt>
+          <dd>The x radius of the ellipse.</dd>
+          <dt><strong>ry</strong></dt>
+          <dd>The y radius of the ellipse.</dd>
+          <dt><strong>cy</strong></dt>
+          <dd>The x position of the center of the ellipse.
+  </dd>
+          <dt><strong>cx</strong></dt>
+          <dd>The y position of the center of the ellipse.
+  </dd>
+        </div>
+        
+        <h2>Line</h2>
+        <p>Lines are again, just straight lines. They take as attributes two points which specify the start and end point of the line.</p>
+        <div class="exampleCode">
+          <code>>>> line x1="10" x2="50" y1="110" y2="150"
+          </code></div>
+        <div class="definitions">
+          <dt><strong>x1</strong></dt>
+          <dd>The x position of point 1.</dd>
+          <dt><strong>x2</strong></dt>
+          <dd>The y position of point 1.</dd>
+          <dt><strong>y1</strong></dt>
+          <dd>The x position of point 2.</dd>
+          <dt><strong>y2</strong></dt>
+          <dd>The y position of point 2.</dd>
+        </div>
+        
+        <h2>Polyline</h2>
+        <p>Polylines are groups of connected straight lines. Since that list can get quite long, all the points are included in one attribute:</p>
+        <div class="exampleCode">
+          <code>>>> polyline points="60 110, 65 120, 70 115, 75 130, 80 125, 85 140, 90 135, 95 150, 100 145"</code></div>
+        <div class="definitions">
+          <dt><strong>points</strong></dt>
+          <dd>A list of points, each number separated by a space, comma, EOL, or a line feed character. Each point must contain two numbers, an x coordinate and a y coordinate. So the list (0,0), (1,1) and (2,2) could be written: "0 0, 1 1, 2 2".</dd>
+        </div>
+        
+        <h2>Polygon</h2>
+        <p>Polygons are a lot like polylines in that they're composed of straight line segments connecting a list of points. For polygons though, the path automatically returns to the first point for you at the end, creating a closed shape. Note that a rectangle is a type of polygon, so a polygon can be used to create a rect element in cases where you need a little more flexibility.</p> 
+        <div class="exampleCode">
+          <code>>>> polygon points="50 160, 55 180, 70 180, 60 190, 65 205, 50 195, 35 205, 40 190, 30 180, 45 180"</code></div>
+        <div class="definitions">
+          <dt><strong>points</strong></dt>
+          <dd>
+  A list of points, each number separated by a space, comma, EOL, or a line feed character. Each point must contain two numbers, an x coordinate and a y coordinate. So the list (0,0), (1,1) and (2,2) could be written: "0 0, 1 1, 2 2". The drawing then closes the path, so a final straight line would be drawn from (2,2) to (0,0).</dd>
+        </div>
+        
+        <h2>Path</h2>
+        <p>Path is probably the most general shape that can be used in SVG. Using a path element you can draw rectangles (with or without rounded corners), circles, ellipses, polylines, and polygons. Basically any of the other types of shapes, bezier curves, quadratic curves, and many more.</p>
+        
+        <div class="exampleCode">
+          <code>path d="M20,230 Q40,205 50,230 T90,230" fill="none" stroke="blue" stroke-width="5"</code></div>
+        <div class="definitions">
+          <dt><strong>d</strong></dt>
+          <dd>A list of points and other information about how to draw the path. The "d" attribute contains a series of commands and parameters used by those commands. </dd>
+          <dd>
+            Each of the commands is instantiated (for example, creating a class, naming and locating it) by a specific letter. For instance, let's move to the x and y coordinates (10, 10). The "Move to" command is called with the letter M. When the parser runs into this letter, it knows you want to move to a point. So, to move to (10,10) you would use the command "M 10 10". After that, the parser begins reading for the next command.
+          </dd>
+          <dd>
+            All of the commands also come in two variants. An uppercase letter specifies absolute coordinates on the page, and a lowercase letter specifies relative coordinates (e.g. move from the last point 10px up and 7px to the left).
+          </dd>
+          <dd>
+            Coordinates in the "d" attribute are always unitless and hence in the user coordinate system. Later, we will learn how paths can be transformed to suit other needs.
+          </dd>
+        </div>
+      </article>
+    </section>
+    <section class="main-section" id="Paths">
+      <header>Paths</header>
+      <article>
+        <p>
+         The path element is the most powerful element in the SVG library of basic shapes. You can use it to create lines, curves, arcs and more. Paths create complex shapes by combining multiple straight lines or curved lines. A good understanding of paths is important when drawing SVGs. While creating complex paths using an XML editor or text editor is not recommended, understanding how they work will allow you to identify and repair display issues in SVGs.
+        </p>
+        <p>
+          The shape of a path element is defined by one attribute: d (see more in basic shapes). The "d" attribute contains a series of commands and parameters used by those commands.
+        </p>
+        <p>
+          Each of the commands is instantiated (for example, creating a class, naming and locating it) by a specific letter. For instance, let's move to the x and y coordinates (10, 10). The "Move to" command is called with the letter M. When the parser runs into this letter, it knows you want to move to a point. So, to move to (10,10) you would use the command "M 10 10". After that, the parser begins reading for the next command.
+        </p>
+        <p>
+          All of the commands also come in two variants. An uppercase letter specifies absolute coordinates on the page, and a lowercase letter specifies relative coordinates (e.g. move from the last point 10px up and 7px to the left).
+        </p>
+        <p>
+          Coordinates in the "d" attribute are always unitless and hence in the user coordinate system. Later, we will learn how paths can be transformed to suit other needs.
+        </p>
+        
+        <h2>Line Commands</h2>
+        <p>There are five line commands for path nodes. The first command is the "Move To" or M. </p>
+        <dt><strong>M</strong></dt>
+        <dd>"Move To" takes two parameters, a coordinate  ' x ' and coordinate ' y ' to move to. If your cursor already was somewhere on the page, no line is drawn to connect the two places. The "Move To" command appears at the beginning of paths to specify where the drawing should start.</dd>
+        <code>>>> M x y</code>
+        <p>or</p>
+        <code>>>> m dx dy</code>
+        
+        <p>There are three commands that draw lines. The most generic is the "Line To" command, called with L.</p> 
+        <dt><strong>L</strong></dt>
+        <dd>"Line" takes two parameters—x and y coordinates—and draws a line from the current position to a new position.</dd>
+        <code>>>> L x y (or l dx dy)</code>
+        
+        <dt><strong>H</strong></dt>
+  
+        <dd>"Horizaontal Line" draws a horizontal line and takes only one argument because it only moves in one direction</dd>
+        
+        <code>>>> H x (or h dx)</code>
+        
+        <dt><strong>V</strong></dt>
+        <dd>"Vertical Line" draws a vertical line and takes only one argument because it only moves in one direction</dd>
+        
+        <code>>>> V y (or v dy)</code>
+        
+        <dt><strong>Z</strong></dt>
+        <dd>"Close Path" draws a straight line from the current position back to the first point of the path. It is often placed at the end of a path node, although not always. There is no difference between the uppercase and lowercase command.</dd>
+        
+        <code>>>> Z (or z)</code>
+        
+        <h2>Curve Commands</h2>
+        <p>There are three different commands that you can use to create smooth curves. Two of those curves are Bezier curves, and the third is an "arc" or part of a circle. You might have already gained practical experience with Bezier curves using path tools in Inkscape, Illustrator or Photoshop. </p>  
+        <p>There are an infinite number of Bezier curves, but only two simple ones are available in path elements: a cubic one, called with C, and a quadratic one, called with Q.</p>
+        
+        <dt><strong>C</strong></dt>
+        <dd>The cubic curve is the slightly more complex curve. Cubic Beziers take in two control points for each point. Therefore, to create a cubic Bezier, you need to specify three sets of coordinates.</dd>
+        <dd>The last set of coordinates here (x,y) are where you want the line to end. The other two are control points. (x1,y1) is the control point for the start of your curve, and (x2,y2) is the control point for the end. The control points essentially describe the slope of your line starting at each point. The Bezier function then creates a smooth curve that transfers you from the slope you established at the beginning of your line, to the slope at the other end.</dd>
+        
+        <code>>>> C x1 y1, x2 y2, x y (or c dx1 dy1, dx2 dy2, dx dy)</code>
+        
+        <dt><strong>S</strong></dt>
+        <dd>You can string together several Bezier curves to create extended, smooth shapes. Often, the control point on one side of a point will be a reflection of the control point used on the other side to keep the slope constant. In this case, you can use a shortcut version of the cubic Bezier, designated by the command S (or s).</dd>
+        <dd>S produces the same type of curve as earlier, but if it follows another S command or a C command, the first control point is assumed to be a reflection of the one used previously. If the S command doesn't follow another S or C command, then the current position of the cursor is used as the first control point.</dd>
+        
+        <code>S x2 y2, x y (or s dx2 dy2, dx dy)</code>
+        
+        <dt><strong>Q</strong></dt>
+        <dd>The other type of Bezier curve, the quadratic curve called with Q, is actually a simpler curve than the cubic one. It requires one control point which determines the slope of the curve at both the start point and the end point. It takes two arguments: the control point and the end point of the curve. Note that the co-ordinate deltas for q are both relative to the previous point (that is, dx and dy are not relative to dx1 and dy1).</dd>
+        <code>Q x1 y1, x y (or q dx1 dy1, dx dy)</code>
+        
+        <dt><strong>T</strong></dt>
+        <dd>As with the cubic Bezier curve, there is a shortcut for stringing together multiple quadratic Beziers, called with T.This shortcut looks at the previous control point you used and infers a new one from it. This means that after your first control point, you can make fairly complex shapes by specifying only end points.</dd>
+        <blockquote>This only works if the previous command was a Q or a T command. If it is not, then the control point is assumed to be the same as the previous point, and you'll only draw lines.</blockquote>
+        <code>T x y (or t dx dy)</code>
+        
+        <h2>Arc</h2>
+        <p>The other type of curved line you can create using SVG is the arc, called with A. Arcs are sections of circles or ellipses.For a given x-radius and y-radius, there are two ellipses that can connect any two points (as long as they're within the radius of the circle). Along either of those circles there are two possible paths that you can take to connect the points, so in any situation there are four possible arcs available. Because of that, arcs have to take in quite a few arguments:</p>
+        <code>A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+  a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy</code>
+        <p>At its start, the arc element takes in two arguments for the x-radius and y-radius. If you need to, look up ellipses to see how they behave. The final two arguments designate the x and y coordinates to end the stroke. Together, these four values define the basic structure of the arc.</p>
+        <p>The third parameter describes the rotation of the arc.</p>
+        <p>If the start->end points are farther than the ellipse's x and y radius can reach, the ellipse's radii will be minimally expanded so it could reach the start->end points. </p>
+    <p>Arcs are an easy way to create pieces of circles or ellipses in your drawings. For instance, a pie chart would require a different arc for each piece.</p>
+      </article>
+    </section>
+    <section class="main-section" id="Fills_and_Strokes">
+      <header>Fills and Strokes</header>
+      <article>
+      <p>
+        There are several ways to color shapes (including specifying attributes on the object) using inline CSS, an embedded CSS section, or an external CSS file. Most SVG you'll find around the web use inline CSS, but there are advantages and disadvantages associated with each type.
+      </p>
+      
+        <h2>Painting</h2>
+        <p>Basic coloring can be done by setting two attributes on the node: fill and stroke. Using fill sets the color inside the object and stroke sets the color of the line drawn around the object. You can use the same css color naming schemes that you use in HTML, whether that's color names (that is red), rgb values (that is rgb(255,0,0)), hex values, rgba values, etc.</p>
+        <code>rect x="10" y="10" width="100" height="100" stroke="blue" fill="purple"
+         fill-opacity="0.5" stroke-opacity="0.8"</code>
+        
+        <h2>Stroke</h2>
+        <p>In addition to its color properties, there are a few other attributes available to control the way a stroke is drawn on a line. Strokes are drawn centered around the path.</p>
+        
+    <dt><strong>stroke-width</strong></dt>
+        <dd>Defines the width of this stroke</dd>
+        
+        <dt><strong>stroke-linecap</strong></dt>
+        <dd>This controls the shape of the ends of lines. There are three possible values for stroke-linecap:</dd>
+        
+       <ul>
+         <li><strong>butt</strong> closes the line off with a straight edge that's normal (at 90 degrees) to the direction of the stroke and crosses its end.</li>
+         <li><strong>square</strong> has essentially the same appearance, but stretches the stroke slightly beyond the actual path. The distance that the stroke goes beyond the path is half the stroke-width.</li>
+         <li><strong>round</strong> produces a rounded effect on the end of the stroke. The radius of this curve is also controlled by the stroke-width.</li>
+       </ul>
+        
+        </article>
+    </section>
+    <section class="main-section" id="Gradients">
+      <header>Gradients</header>
+      <article>
+        <p>
+         Perhaps more exciting than just fills and strokes is the fact that you can also create and apply gradients as either fills or strokes.
+        </p>
+        <p>There are two types of gradients: linear and radial. You must give the gradient an id attribute; otherwise it can't be referenced by other elements inside the file.  Gradients are defined in a defs section as opposed to on a shape itself to promote reusability.</p>
+        
+        <h2>Linear Gradient</h2>
+        <p>Linear gradients change along a straight line. To insert one, you create a ' linearGradient ' node inside the definitions section of your SVG file.</p>
+        
+        <dt><strong>stop</strong></dt>
+        <dd>Inside the linear gradient are several ' stop ' nodes. These nodes tell the gradient what color it should be at certain positions by specifying an ' offset ' attribute for the position, and a ' stop-color ' attribute. </dd>
+      <code>stop offset="100%" stop-color="yellow" stop-opacity="0.5"</code>
+        
+      <p>To use a gradient, we have to reference it from an object's fill or stroke attributes. This is done the same way you reference elements in CSS, using a url. In this case, the url is just a reference to our gradient, which I've given the creative ID, "Gradient". To attach it, set the fill to url(#Gradient), and voila! </p> 
+       <p>You can do the same with stroke.</p>
+        
+       <p>The ' linearGradient ' element also takes several other attributes, which specify the size and appearance of the gradient. The orientation of the gradient is controlled by two points, designated by the attributes x1, x2, y1, and y2. These attributes define a line along which the gradient travels. The gradient defaults to a horizontal orientation, but it can be rotated by changing these. 
+  </p>
+        <code>linearGradient id="Gradient2" x1="0" x2="0" y1="0" y2="1"</code>
+        
+        <h2>Radial Gradient</h2>
+        <p>Radial gradients are similar to linear ones but draw a gradient that radiates out from a point. To create one you add a ' radialGradient ' element to the definitions section of your document.</p>
+        <p>Like linear gradients, the ' radialGradient ' node can take several attributes to describe its position and orientation. However, unlike linear gradients, it's a bit more complex. The radial gradient is again defined by two points, which determine where its edges are. The first of these defines a circle around which the gradient ends. It requires a center point, designated by the ' cx ' and ' cy ' attributes, and a radius, ' r '. Setting these three attributes will allow you to move the gradient around and change its size.</p>
+       <p> The second point is called the focal point and is defined by the ' fx ' and ' fy ' attributes. While the first point described where the edges of the gradient were, the focal point describes where its middle is.</p>
+        <p>If the focal point is moved outside the circle described earlier, it's impossible for the gradient to be rendered correctly, so the spot will be assumed to be within the edge of the circle. If the focal point isn't given at all, it's assumed to be at the same place as the center point.</p>
+  
+        <dt><strong>spreadMethod</strong></dt>
+        <dd>This attribute controls what happens when the gradient reaches its end, but the object isn't filled yet. It can take on one of three values, "pad", "reflect", or "repeat". </dd>
+        <ul>
+          <li><dt><strong>pad</strong></dt><dd>When the gradient reaches its end, the final offset color is used to fill the rest of the object. </dd></li>
+          <li><dt><strong>reflect</strong></dt><dd>causes the gradient to continue on, but reflected in reverse, starting with the color offset at 100% and moving back to the offset at 0%, and then back up again.</dd></li>
+          <li><dt><strong>repeat</strong></dt><dd>lets the gradient continue, but instead of going backwards, it just jumps back to the beginning and runs again.</dd></li>
+        </ul>
+      </article>
+    </section>
+    
+  <!--   <section class="main-section" id="Patterns">
+      <header>Patterns</header>
+      <article>
+        <p>
+          When you declare a variable outside of any function, it is called a
+          global variable, because it is available to any other code in the
+          current document. When you declare a variable within a function, it is
+          called a local variable, because it is available only within that
+          function.
+        </p>
+  
+        <p>
+          JavaScript before ECMAScript 2015 does not have block statement scope;
+          rather, a variable declared within a block is local to the function (or
+          global scope) that the block resides within. For example the following
+          code will log 5, because the scope of x is the function (or global
+          context) within which x is declared, not the block, which in this case
+          is an if statement.
+        </p>
+        <code>if (true) { var x = 5; } console.log(x); // 5</code>
+        <p>
+          This behavior changes, when using the let declaration introduced in
+          ECMAScript 2015.
+        </p>
+  
+        <code
+          >if (true) { let y = 5; } console.log(y); // ReferenceError: y is not
+          defined</code
+        >
+      </article>
+    </section>
+    <section class="main-section" id="Texts">
+      <header>Texts</header>
+      <article>
+        <p>
+          Global variables are in fact properties of the global object. In web
+          pages the global object is window, so you can set and access global
+          variables using the window.variable syntax.
+        </p>
+  
+        <p>
+          Consequently, you can access global variables declared in one window or
+          frame from another window or frame by specifying the window or frame
+          name. For example, if a variable called phoneNumber is declared in a
+          document, you can refer to this variable from an iframe as
+          parent.phoneNumber.
+        </p>
+      </article>
+    </section>
+    <section class="main-section" id="Transformation">
+      <header>Transformation</header>
+      <article>
+        <p>
+          You can create a read-only, named constant with the const keyword. The
+          syntax of a constant identifier is the same as for a variable
+          identifier: it must start with a letter, underscore or dollar sign and
+          can contain alphabetic, numeric, or underscore characters.
+        </p>
+  
+        <code>const PI = 3.14;</code>
+        <p>
+          A constant cannot change value through assignment or be re-declared
+          while the script is running. It has to be initialized to a value.
+        </p>
+  
+        <p>
+          The scope rules for constants are the same as those for let block scope
+          variables. If the const keyword is omitted, the identifier is assumed to
+          represent a variable.
+        </p>
+  
+        <p>
+          You cannot declare a constant with the same name as a function or
+          variable in the same scope. For example:
+        </p>
+  
+        <code
+          >// THIS WILL CAUSE AN ERROR function f() {}; const f = 5; // THIS WILL
+          CAUSE AN ERROR ALSO function f() { const g = 5; var g; //statements
+          }</code
+        >
+        However, object attributes are not protected, so the following statement
+        is executed without problems.
+        <code
+          >const MY_OBJECT = {"key": "value"}; MY_OBJECT.key = "otherValue";</code
+        >
+      </article>
+    </section>
+    <section class="main-section" id="Clipping_and_Masking">
+      <header>Clipping and Masking</header>
+      <article>
+        <p>The latest ECMAScript standard defines seven data types:</p>
+        <ul>
+          <li>
+            <p>Six data types that are primitives:</p>
+            <ul>
+              <li>Boolean. true and false.</li>
+              <li>
+                null. A special keyword denoting a null value. Because JavaScript
+                is case-sensitive, null is not the same as Null, NULL, or any
+                other variant.
+              </li>
+              <li>undefined. A top-level property whose value is undefined.</li>
+              <li>Number. 42 or 3.14159.</li>
+              <li>String. "Howdy"</li>
+              <li>
+                Symbol (new in ECMAScript 2015). A data type whose instances are
+                unique and immutable.
+              </li>
+            </ul>
+          </li>
+  
+          <li>and Object</li>
+        </ul>
+        Although these data types are a relatively small amount, they enable you
+        to perform useful functions with your applications. Objects and functions
+        are the other fundamental elements in the language. You can think of
+        objects as named containers for values, and functions as procedures that
+        your application can perform.
+      </article>
+    </section>
+    <section class="main-section" id="Filter_Effects">
+      <header>Filter Effects</header>
+      <article>
+        Use the if statement to execute a statement if a logical condition is
+        true. Use the optional else clause to execute a statement if the condition
+        is false. An if statement looks as follows:
+  
+        <code>if (condition) { statement_1; } else { statement_2; }</code>
+        condition can be any expression that evaluates to true or false. See
+        Boolean for an explanation of what evaluates to true and false. If
+        condition evaluates to true, statement_1 is executed; otherwise,
+        statement_2 is executed. statement_1 and statement_2 can be any statement,
+        including further nested if statements.
+        <p>
+          You may also compound the statements using else if to have multiple
+          conditions tested in sequence, as follows:
+        </p>
+        <code
+          >if (condition_1) { statement_1; } else if (condition_2) { statement_2;
+          } else if (condition_n) { statement_n; } else { statement_last; }
+        </code>
+        In the case of multiple conditions only the first logical condition which
+        evaluates to true will be executed. To execute multiple statements, group
+        them within a block statement ({ ... }) . In general, it's good practice
+        to always use block statements, especially when nesting if statements:
+  
+        <code
+          >if (condition) { statement_1_runs_if_condition_is_true;
+          statement_2_runs_if_condition_is_true; } else {
+          statement_3_runs_if_condition_is_false;
+          statement_4_runs_if_condition_is_false; }</code
+        >
+        It is advisable to not use simple assignments in a conditional expression,
+        because the assignment can be confused with equality when glancing over
+        the code. For example, do not use the following code:
+        <code>if (x = y) { /* statements here */ }</code> If you need to use an
+        assignment in a conditional expression, a common practice is to put
+        additional parentheses around the assignment. For example:
+  
+        <code>if ((x = y)) { /* statements here */ }</code>
+      </article>
+    </section>
+    <section class="main-section" id="Animation">
+      <header>Animation</header>
+      <article>
+        A while statement executes its statements as long as a specified condition
+        evaluates to true. A while statement looks as follows:
+  
+        <code>while (condition) statement</code> If the condition becomes false,
+        statement within the loop stops executing and control passes to the
+        statement following the loop.
+  
+        <p>
+          The condition test occurs before statement in the loop is executed. If
+          the condition returns true, statement is executed and the condition is
+          tested again. If the condition returns false, execution stops and
+          control is passed to the statement following while.
+        </p>
+  
+        <p>
+          To execute multiple statements, use a block statement ({ ... }) to group
+          those statements.
+        </p>
+  
+        Example:
+  
+        <p>The following while loop iterates as long as n is less than three:</p>
+  
+        <code>var n = 0; var x = 0; while (n &lt; 3) { n++; x += n; }</code>
+        <p>
+          With each iteration, the loop increments n and adds that value to x.
+          Therefore, x and n take on the following values:
+        </p>
+  
+        <ul>
+          <li>After the first pass: n = 1 and x = 1</li>
+          <li>After the second pass: n = 2 and x = 3</li>
+          <li>After the third pass: n = 3 and x = 6</li>
+        </ul>
+        <p>
+          After completing the third pass, the condition n &lt; 3 is no longer
+          true, so the loop terminates.
+        </p>
+      </article>
+    </section>
+    <section class="main-section" id="Fonts">
+      <header>Fonts</header>
+      <article>
+        A function definition (also called a function declaration, or function
+        statement) consists of the function keyword, followed by:
+        <ul>
+          <li>The name of the function.</li>
+          <li>
+            A list of arguments to the function, enclosed in parentheses and
+            separated by commas.
+          </li>
+          <li>
+            The JavaScript statements that define the function, enclosed in curly
+            brackets, { }.
+          </li>
+        </ul>
+        <p>
+          For example, the following code defines a simple function named square:
+        </p>
+  
+        <code>function square(number) { return number * number; }</code>
+        <p>
+          The function square takes one argument, called number. The function
+          consists of one statement that says to return the argument of the
+          function (that is, number) multiplied by itself. The return statement
+          specifies the value returned by the function.
+        </p>
+        <code>return number * number;</code>
+        <p>
+          Primitive parameters (such as a number) are passed to functions by
+          value; the value is passed to the function, but if the function changes
+          the value of the parameter, this change is not reflected globally or in
+          the calling function.
+        </p>
+      </article>
+    </section>
+    <section class="main-section" id="Reference">
+      <header>Reference</header>
+      <article>
+        <ul>
+          <li>
+            All the documentation in this page is taken from
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+              target="_blank"
+              >MDN</a
+            >
+          </li>
+        </ul>
+      </article>
+    </section> -->
+  </main>
+</body>
+</html>
